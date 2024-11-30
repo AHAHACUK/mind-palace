@@ -1,0 +1,15 @@
+name: mind_palace
+
+packages:
+  - packages/**
+
+command:
+  bootstrap:
+    hooks:
+      post: melos run l10n
+
+scripts:
+  l10n:
+    exec: fvm flutter gen-l10n
+    packageFilters: 
+      fileExists: l10n.yaml

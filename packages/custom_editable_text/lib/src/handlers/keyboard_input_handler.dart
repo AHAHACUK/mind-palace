@@ -11,9 +11,9 @@ class KeyboardInputHandler implements CustomInputHandler<CustomTextIntent?> {
     required TextSelection selection,
   }) {
     if (keyEvent is! KeyDownEvent) return null;
-
-    if (keyEvent.character != null) {
-      return _handleCharacterKey(keyEvent.character!, selection);
+    final isCtrl = HardwareKeyboard.instance.isControlPressed;
+    if (keyEvent.logicalKey == LogicalKeyboardKey.keyV && isCtrl) {
+      return _handlePaste(selection);
     }
     if (keyEvent.logicalKey == LogicalKeyboardKey.enter) {
       return _handleEnterKey(selection);
@@ -23,6 +23,9 @@ class KeyboardInputHandler implements CustomInputHandler<CustomTextIntent?> {
     }
     if (keyEvent.logicalKey == LogicalKeyboardKey.delete) {
       return _handleDeleteKey(selection);
+    }
+    if (keyEvent.character != null) {
+      return _handleCharacterKey(keyEvent.character!, selection);
     }
     return null;
   }
@@ -51,17 +54,21 @@ class KeyboardInputHandler implements CustomInputHandler<CustomTextIntent?> {
     );
   }
 
+  CustomTextIntent _handlePaste(TextSelection selection) {
+    return CustomParseIntent(
+      range: TextRange(
+        start: selection.baseOffset,
+        end: selection.extentOffset,
+      ),
+    );
+  }
+
   CustomTextIntent _handleEnterKey(TextSelection selection) {
-    if (!selection.isCollapsed) {
-      return CustomReplaceWithNewLineIntent(
-        range: TextRange(
-          start: selection.baseOffset,
-          end: selection.extentOffset,
-        ),
-      );
-    }
     return CustomInsertNewLineIntent(
-      offset: selection.baseOffset,
+      range: TextRange(
+        start: selection.baseOffset,
+        end: selection.extentOffset,
+      ),
     );
   }
 

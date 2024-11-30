@@ -10,7 +10,8 @@ class CustomTextControllerAdapter extends ChangeNotifier
 
   Never _error() {
     throw Exception(
-        'Unexpected interaction with [CustomTextControllerAdapter]');
+      'Unexpected interaction with [CustomTextControllerAdapter]',
+    );
   }
 
   @override

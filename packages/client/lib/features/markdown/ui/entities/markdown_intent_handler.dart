@@ -8,7 +8,7 @@ class MarkdownIntentHandler implements CustomIntentHandler<CustomTextIntent> {
   const MarkdownIntentHandler({required this.controller});
 
   @override
-  void handleIntent(CustomTextIntent intent) {
+  Future<void> handleIntent(CustomTextIntent intent) async {
     switch (intent) {
       case CustomReplaceTextIntent _:
         controller.replaceText(
@@ -26,13 +26,15 @@ class MarkdownIntentHandler implements CustomIntentHandler<CustomTextIntent> {
         );
       case CustomInsertNewLineIntent():
         controller.replaceText(
-          TextRange.collapsed(intent.offset),
-          '\n',
-        );
-      case CustomReplaceWithNewLineIntent():
-        controller.replaceText(
           intent.range,
           '\n',
+        );
+      case CustomParseIntent():
+        final data = await Clipboard.getData('text/plain');
+        if (data?.text == null) return;
+        controller.replaceText(
+          intent.range,
+          data!.text!,
         );
       case CustomDeleteRangeIntent():
         controller.replaceText(

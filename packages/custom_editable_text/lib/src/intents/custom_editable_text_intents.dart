@@ -4,6 +4,14 @@ sealed class CustomTextIntent extends Intent {
   const CustomTextIntent();
 }
 
+class CustomParseIntent extends CustomTextIntent {
+  final TextRange range;
+
+  const CustomParseIntent({
+    required this.range,
+  });
+}
+
 class CustomInsertCharacterIntent extends CustomTextIntent {
   final String character;
   final int offset;
@@ -15,17 +23,9 @@ class CustomInsertCharacterIntent extends CustomTextIntent {
 }
 
 class CustomInsertNewLineIntent extends CustomTextIntent {
-  final int offset;
-
-  const CustomInsertNewLineIntent({
-    required this.offset,
-  });
-}
-
-class CustomReplaceWithNewLineIntent extends CustomTextIntent {
   final TextRange range;
 
-  const CustomReplaceWithNewLineIntent({
+  const CustomInsertNewLineIntent({
     required this.range,
   });
 }

@@ -1,0 +1,32 @@
+name: mind_palace_client
+description: "A notes app"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies: 
+  # For resizing app window
+  window_manager: ^0.4.3
+  # For storing preferences, like theme
+  shared_preferences: ^2.3.3
+  # Navigation lib
+  go_router: ^14.6.1
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+  custom_editable_text:
+    path: ../custom_editable_text
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true 

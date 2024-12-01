@@ -16,9 +16,14 @@ class MindPalaceCachedJsonStorage {
 
   Future<void> init() async {
     final file = File(_path);
-    final content = await file.readAsString();
-    final json = jsonDecode(content);
-    _project = ProjectModel.fromJson(json);
+    final fileExits = await file.exists();
+    if (!fileExits) {
+      _project = ProjectModel.initial();
+    } else {
+      final content = await file.readAsString();
+      final json = jsonDecode(content);
+      _project = ProjectModel.fromJson(json);
+    }
 
     nodes = ProjectNodesStorage(project: _project);
   }

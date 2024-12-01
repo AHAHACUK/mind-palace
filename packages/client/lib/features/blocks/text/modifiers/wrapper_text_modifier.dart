@@ -1,25 +1,23 @@
 import 'package:flutter/foundation.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_character.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_formatter.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_text_update.dart';
+import 'package:modified_editable_text/effects_editable_text.dart';
 
 /// Applies formatting to portion of the text that is wrapped by [leftWrapperRegex] and [rightWrapperRegex]
 ///
 /// For example, if wrapper is '**', then the formatting would be applied to string 'this **text** is wrapped'.
 ///
 /// The result string would be 'this text is wrapped' and 'text' will be passed ti [applyToWrapped]
-abstract class WrapperFormatter implements MarkdownFormatter {
-  const WrapperFormatter();
+abstract class WrapperTextModifier implements TextModifier {
+  const WrapperTextModifier();
 
   @protected
-  void applyToWrapped(List<MarkdownCharacter> entries);
+  void applyToWrapped(List<ModifiedCharacter> entries);
 
   @protected
   String get leftWrapperRegex;
   String get rightWrapperRegex;
 
   @override
-  MarkdownTextUpdate apply(MarkdownTextUpdate update) {
+  ModifiedTextUpdate apply(ModifiedTextUpdate update) {
     final text = update.newText;
     final regex = RegExp('($leftWrapperRegex)(.+?)($rightWrapperRegex)');
     final matches = regex.allMatches(text);

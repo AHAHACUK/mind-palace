@@ -1,11 +1,12 @@
 import 'package:custom_editable_text/custom_editable_text.dart';
+import 'package:modified_editable_text/src/controllers/modified_text_controller.dart';
 import 'package:flutter/services.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_text_controller.dart';
 
-class MarkdownIntentHandler implements CustomIntentHandler<CustomTextIntent> {
-  final MarkdownTextController controller;
+class ModifiedControllerIntentHandler
+    implements CustomIntentHandler<CustomTextIntent> {
+  final ModifiedTextController controller;
 
-  const MarkdownIntentHandler({required this.controller});
+  const ModifiedControllerIntentHandler({required this.controller});
 
   @override
   Future<void> handleIntent(CustomTextIntent intent) async {

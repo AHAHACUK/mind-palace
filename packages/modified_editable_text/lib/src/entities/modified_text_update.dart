@@ -1,25 +1,25 @@
+import 'package:modified_editable_text/src/entities/modified_character.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_character.dart';
 
-class MarkdownTextUpdate {
-  final List<MarkdownCharacter> newCharacters;
+class ModifiedTextUpdate {
+  final List<ModifiedCharacter> newCharacters;
   final TextSelection newSelection;
   final String insertedText;
 
   String get newText =>
       String.fromCharCodes(newCharacters.map((e) => e.codeUnit));
 
-  const MarkdownTextUpdate({
+  const ModifiedTextUpdate({
     required this.newCharacters,
     required this.newSelection,
     required this.insertedText,
   });
 
-  MarkdownTextUpdate copyWith({
-    List<MarkdownCharacter>? newCharacters,
+  ModifiedTextUpdate copyWith({
+    List<ModifiedCharacter>? newCharacters,
     TextSelection? newSelection,
   }) {
-    return MarkdownTextUpdate(
+    return ModifiedTextUpdate(
       newCharacters: newCharacters ?? this.newCharacters,
       newSelection: newSelection ?? this.newSelection,
       insertedText: insertedText,

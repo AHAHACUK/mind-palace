@@ -1,24 +1,21 @@
 import 'dart:math';
 
 import 'package:custom_editable_text/custom_editable_text.dart';
+import 'package:modified_editable_text/src/entities/modified_character.dart';
+import 'package:modified_editable_text/src/entities/modified_text_span.dart';
+import 'package:modified_editable_text/src/entities/modified_text_update.dart';
+import 'package:modified_editable_text/src/entities/modified_text_value.dart';
+import 'package:modified_editable_text/src/interfaces/text_modifier.dart';
+import 'package:modified_editable_text/src/utils/markdown_span_to_text_extension.dart';
+import 'package:modified_editable_text/src/utils/text_range_normalized_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_character.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_formatter.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_text_span.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_text_update.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_text_value.dart';
-import 'package:mind_palace_client/features/markdown/ui/formatters/bold_formatter.dart';
-import 'package:mind_palace_client/features/markdown/ui/formatters/italic_formatter.dart';
-import 'package:mind_palace_client/features/markdown/ui/utils/markdown_span_to_text_extension.dart';
-import 'package:mind_palace_client/utils/text_range/text_range_normalized_extension.dart';
 
-class MarkdownTextController extends CustomTextController<MarkdownTextValue> {
-  static const _formatters = <MarkdownFormatter>[
-    BoldFormatter(),
-    ItalicFormatter(),
-  ];
+class ModifiedTextController extends CustomTextController<ModifiedTextValue> {
+  final List<TextModifier> _modifiers;
 
-  MarkdownTextController() : super(const MarkdownTextValue.empty());
+  ModifiedTextController({required List<TextModifier> modifiers})
+      : _modifiers = modifiers,
+        super(const ModifiedTextValue.empty());
 
   @override
   TextSelection get selection => value.selection;
@@ -32,9 +29,9 @@ class MarkdownTextController extends CustomTextController<MarkdownTextValue> {
   }
 
   void _formatAndApply(
-    MarkdownTextUpdate update,
+    ModifiedTextUpdate update,
   ) {
-    for (final formatter in _formatters) {
+    for (final formatter in _modifiers) {
       update = formatter.apply(update);
     }
     value = value.copyWith(
@@ -54,11 +51,11 @@ class MarkdownTextController extends CustomTextController<MarkdownTextValue> {
     newCharacters.removeRange(start, oldEnd);
     newCharacters.insertAll(
       start,
-      MarkdownCharacter.listFromString(text),
+      ModifiedCharacter.listFromString(text),
     );
     final newSelection = TextSelection.collapsed(offset: newEnd);
     _formatAndApply(
-      MarkdownTextUpdate(
+      ModifiedTextUpdate(
         newCharacters: newCharacters,
         newSelection: newSelection,
         insertedText: text,

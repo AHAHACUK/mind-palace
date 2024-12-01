@@ -8,6 +8,8 @@ class ProjectModel {
 
   const ProjectModel({required this.nodes});
 
+  ProjectModel.initial() : nodes = {};
+
   factory ProjectModel.fromJson(Map<String, dynamic> json) =>
       _$ProjectModelFromJson(json);
   Map<String, dynamic> toJson() => _$ProjectModelToJson(this);

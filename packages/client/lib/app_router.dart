@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mind_palace_client/features/markdown/ui/pages/test_text_page.dart';
+import 'package:mind_palace_client/features/test/ui/pages/test_text_page.dart';
 
 final _goRouter = GoRouter(
   routes: [

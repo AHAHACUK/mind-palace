@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mind_palace_client/features/markdown/ui/widgets/markdown_editing_text.dart';
+import 'package:mind_palace_client/features/blocks/text/widgets/text_block.dart';
 
 class TestTextPage extends StatelessWidget {
   const TestTextPage({super.key});
@@ -7,7 +7,7 @@ class TestTextPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MarkdownEditingText(),
+      body: TextBlock(),
     );
   }
 }

@@ -19,8 +19,8 @@ dependencies:
     sdk: flutter
   intl: any
 
-  custom_editable_text:
-    path: ../custom_editable_text
+  modified_editable_text:
+    path: ../modified_editable_text
     
   mind_palace_json_storage:
     path: ../json_storage

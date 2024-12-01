@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
-abstract class MarkdownEffect {
+abstract class TextEffect {
   TextSpan apply(TextSpan textSpan);
 }

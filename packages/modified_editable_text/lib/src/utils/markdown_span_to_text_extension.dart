@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_text_span.dart';
+import 'package:modified_editable_text/src/entities/modified_text_span.dart';
 
-extension MarkdownSpanToTextExtension on MarkdownTextSpan {
+extension MarkdownSpanToTextExtension on ModifiedTextSpan {
   TextSpan toTextSpan() {
     var textSpan = TextSpan(
       text: text,

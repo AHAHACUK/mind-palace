@@ -1,4 +1,9 @@
+# melos_managed_dependency_overrides: mind_palace_json_storage,modified_editable_text
 # melos_managed_dependency_overrides: custom_editable_text
 dependency_overrides:
   custom_editable_text:
     path: ..\\custom_editable_text
+  mind_palace_json_storage:
+    path: ..\\json_storage
+  modified_editable_text:
+    path: ..\\modified_editable_text

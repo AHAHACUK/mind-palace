@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "1.18.0"
   custom_editable_text:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       path: "../custom_editable_text"
       relative: true
@@ -195,6 +195,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  modified_editable_text:
+    dependency: "direct main"
+    description:
+      path: "../modified_editable_text"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   path:
     dependency: transitive
     description:

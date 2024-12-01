@@ -1,24 +1,24 @@
+import 'package:modified_editable_text/src/entities/modified_character.dart';
+import 'package:modified_editable_text/src/interfaces/text_effect.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_character.dart';
-import 'package:mind_palace_client/features/markdown/ui/entities/markdown_effect.dart';
 
-class MarkdownTextSpan {
+class ModifiedTextSpan {
   final String text;
-  final Set<MarkdownEffect> effects;
+  final Set<TextEffect> effects;
 
-  const MarkdownTextSpan({required this.text, required this.effects});
-  const MarkdownTextSpan.empty()
+  const ModifiedTextSpan({required this.text, required this.effects});
+  const ModifiedTextSpan.empty()
       : text = '',
         effects = const {};
 }
 
-extension MarkdownTextSpanToCharactersExtension on List<MarkdownTextSpan> {
-  List<MarkdownCharacter> toCharacters() {
-    final List<MarkdownCharacter> characters = [];
+extension MarkdownTextSpanToCharactersExtension on List<ModifiedTextSpan> {
+  List<ModifiedCharacter> toCharacters() {
+    final List<ModifiedCharacter> characters = [];
     for (final span in this) {
       for (final character in span.text.codeUnits) {
         characters.add(
-          MarkdownCharacter(
+          ModifiedCharacter(
             codeUnit: character,
             effects: span.effects,
           ),
@@ -29,10 +29,10 @@ extension MarkdownTextSpanToCharactersExtension on List<MarkdownTextSpan> {
   }
 }
 
-extension MarkdownTextSpanFromCharactersExtension on List<MarkdownCharacter> {
-  List<MarkdownTextSpan> toSpans() {
+extension MarkdownTextSpanFromCharactersExtension on List<ModifiedCharacter> {
+  List<ModifiedTextSpan> toSpans() {
     if (isEmpty) return [];
-    final List<MarkdownTextSpan> spans = [];
+    final List<ModifiedTextSpan> spans = [];
     final buffer = StringBuffer();
     buffer.writeCharCode(first.codeUnit);
     var currentEffects = first.effects;
@@ -42,7 +42,7 @@ extension MarkdownTextSpanFromCharactersExtension on List<MarkdownCharacter> {
         buffer.writeCharCode(entry.codeUnit);
         continue;
       }
-      var textSpan = MarkdownTextSpan(
+      var textSpan = ModifiedTextSpan(
         text: buffer.toString(),
         effects: currentEffects,
       );
@@ -52,7 +52,7 @@ extension MarkdownTextSpanFromCharactersExtension on List<MarkdownCharacter> {
       currentEffects = entry.effects;
     }
 
-    var textSpan = MarkdownTextSpan(
+    var textSpan = ModifiedTextSpan(
       text: buffer.toString(),
       effects: currentEffects,
     );

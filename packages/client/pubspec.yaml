@@ -21,6 +21,9 @@ dependencies:
 
   custom_editable_text:
     path: ../custom_editable_text
+    
+  mind_palace_json_storage:
+    path: ../json_storage
 
 dev_dependencies:
   flutter_test:

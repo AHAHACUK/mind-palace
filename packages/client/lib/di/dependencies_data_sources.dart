@@ -1,9 +1,20 @@
 part of 'dependencies.dart';
 
 Future<_DependenciesDataSources> _initDataSources() async {
-  return _DependenciesDataSources();
+  final mindPalaceJsonStorage = MindPalaceCachedJsonStorage(
+    path: 'test.plc',
+  );
+  await mindPalaceJsonStorage.init();
+
+  return _DependenciesDataSources(
+    mindPalaceJsonStorage: mindPalaceJsonStorage,
+  );
 }
 
 class _DependenciesDataSources {
-  _DependenciesDataSources();
+  final MindPalaceCachedJsonStorage mindPalaceJsonStorage;
+
+  _DependenciesDataSources({
+    required this.mindPalaceJsonStorage,
+  });
 }

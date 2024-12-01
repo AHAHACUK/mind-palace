@@ -188,6 +188,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
+  mind_palace_json_storage:
+    dependency: "direct main"
+    description:
+      path: "../json_storage"
+      relative: true
+    source: path
+    version: "1.0.0"
   path:
     dependency: transitive
     description:

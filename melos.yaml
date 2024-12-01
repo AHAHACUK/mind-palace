@@ -6,10 +6,18 @@ packages:
 command:
   bootstrap:
     hooks:
-      post: melos run l10n
+      post: melos run l10n & melos run build
 
 scripts:
   l10n:
     exec: fvm flutter gen-l10n
     packageFilters: 
       fileExists: l10n.yaml
+  build:
+    exec: fvm dart run build_runner build -d
+    packageFilters: 
+      fileExists: build.yaml
+  watch:
+    exec: fvm dart run build_runner watch -d
+    packageFilters: 
+      fileExists: build.yaml

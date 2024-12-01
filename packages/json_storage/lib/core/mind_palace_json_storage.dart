@@ -9,6 +9,7 @@ class MindPalaceCachedJsonStorage {
   late ProjectModel _project;
 
   late final ProjectNodesStorage nodes;
+  late final ProjectBlocksStorage blocks;
 
   MindPalaceCachedJsonStorage({
     required String path,

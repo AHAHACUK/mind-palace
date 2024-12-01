@@ -1,4 +1,4 @@
-import 'package:mind_palace_client/features/navigation/data/repository/json_storage_project_node_repository.dart';
+import 'package:mind_palace_client/features/navigation/data/repository/json_storage_project_node/json_storage_project_node_repository.dart';
 import 'package:mind_palace_client/features/navigation/domain/interactor/project_node_interactor.dart';
 import 'package:mind_palace_client/features/navigation/domain/repository/project_node_repository.dart';
 import 'package:mind_palace_json_storage/core/mind_palace_json_storage.dart';

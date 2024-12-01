@@ -1,5 +1,5 @@
-import 'package:mind_palace_client/features/blocks/text/effects/italic_effect.dart';
-import 'package:mind_palace_client/features/blocks/text/modifiers/wrapper_text_modifier.dart';
+import 'package:mind_palace_client/features/blocks/blocks/text/effects/markdown/effects/italic_text_effect.dart';
+import 'package:mind_palace_client/features/blocks/blocks/text/effects/markdown/modifiers/wrapper_text_modifier.dart';
 import 'package:mind_palace_client/utils/iterable/iterable_contains_type_extension.dart';
 import 'package:modified_editable_text/effects_editable_text.dart';
 
@@ -9,8 +9,8 @@ class ItalicTextModifier extends WrapperTextModifier {
   @override
   void applyToWrapped(List<ModifiedCharacter> entries) {
     for (final entry in entries) {
-      if (!entry.effects.containsType<ItalicEffect>()) {
-        entry.effects.add(const ItalicEffect());
+      if (!entry.effects.containsType<ItalicTextEffect>()) {
+        entry.effects.add(const ItalicTextEffect());
       }
     }
   }

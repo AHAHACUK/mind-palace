@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:mind_palace_client/features/blocks/text/modifiers/bold_text_modifier.dart';
-import 'package:mind_palace_client/features/blocks/text/modifiers/italic_text_modifier.dart';
+import 'package:mind_palace_client/features/blocks/blocks/text/effects/markdown/modifiers/bold_text_modifier.dart';
+import 'package:mind_palace_client/features/blocks/blocks/text/effects/markdown/modifiers/italic_text_modifier.dart';
 import 'package:modified_editable_text/effects_editable_text.dart';
 
 class TextBlock extends StatefulWidget {

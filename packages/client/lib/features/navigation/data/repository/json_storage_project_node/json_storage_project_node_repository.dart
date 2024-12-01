@@ -1,3 +1,4 @@
+import 'package:mind_palace_client/features/navigation/data/repository/json_storage_project_node/project_tree_node_model_parser.dart';
 import 'package:mind_palace_client/features/navigation/domain/entities/project_node.dart';
 import 'package:mind_palace_client/features/navigation/domain/repository/project_node_repository.dart';
 import 'package:mind_palace_json_storage/mind_palace_storage.dart';
@@ -35,20 +36,6 @@ class JsonStorageProjectNodeRepository implements ProjectNodeRepository {
       node.id,
       newParentNode?.id,
       newOrder,
-    );
-  }
-}
-
-extension _ModelParser on ProjectTreeNode {
-  ProjectNode toEntity() {
-    return ProjectNode(
-      id: node.id,
-      name: node.name,
-      subNodes: subNodes
-          .map(
-            (e) => e.toEntity(),
-          )
-          .toList(),
     );
   }
 }

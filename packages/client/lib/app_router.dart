@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mind_palace_client/features/test/ui/pages/test_text_page.dart';
+import 'package:mind_palace_client/features/app/ui/pages/app_page.dart';
 
 final _goRouter = GoRouter(
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
-      builder: (_, __) => const TestTextPage(),
+      builder: (_, __) => const AppPage(),
     ),
   ],
 );

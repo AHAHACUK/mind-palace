@@ -6,6 +6,8 @@ class TextProjectBlock extends ProjectBlock {
 
   const TextProjectBlock({
     required super.id,
+    required super.order,
+    required super.parentNodeId,
     required this.spans,
   });
 }

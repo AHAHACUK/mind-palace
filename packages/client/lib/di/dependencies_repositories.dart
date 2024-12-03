@@ -4,15 +4,27 @@ Future<_DependenciesRepositories> _initRepositories(
   _DependenciesDataSources dataSources,
 ) async {
   return _DependenciesRepositories(
-    projectNodes: JsonStorageProjectNodeRepository(
+    workingNodes: MemoryProjectNodeCacheRepository(),
+    workingBlocks: MemoryProjectBlocksWorkingRepository(),
+    storageBlocks: JsonProjectBlockStorageRepository(
+      storage: dataSources.mindPalaceJsonStorage,
+    ),
+    storageNodes: JsonProjectNodeStorageRepository(
       storage: dataSources.mindPalaceJsonStorage,
     ),
   );
 }
 
 class _DependenciesRepositories {
-  final ProjectNodeRepository projectNodes;
+  final ProjectNodeWorkingRepository workingNodes;
+  final ProjectNodeStorageRepository storageNodes;
+  final ProjectBlockWorkingRepository workingBlocks;
+  final ProjectBlockStorageRepository storageBlocks;
+
   _DependenciesRepositories({
-    required this.projectNodes,
+    required this.workingNodes,
+    required this.storageNodes,
+    required this.workingBlocks,
+    required this.storageBlocks,
   });
 }

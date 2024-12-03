@@ -3,5 +3,7 @@
     "title": "Mind Palace",
     "@title": {
         "description": "App Title"
-    }
+    },
+    "defaultNodeName": "New Node",
+    "defaultProjectName": "Mind Palace"
 }

@@ -1,29 +1,64 @@
 import 'package:mind_palace_client/features/navigation/domain/entities/project_node.dart';
-import 'package:mind_palace_client/features/navigation/domain/repository/project_node_repository.dart';
+import 'package:mind_palace_client/features/navigation/domain/repository/project_node_working_repository.dart';
+import 'package:mind_palace_client/features/navigation/domain/repository/project_node_storage_repository.dart';
 
 class ProjectNodeInteractor {
-  final ProjectNodeRepository _repository;
+  final ProjectNodeWorkingRepository _working;
+  final ProjectNodeStorageRepository _storage;
 
-  ProjectNodeInteractor({required ProjectNodeRepository repository})
-      : _repository = repository;
+  const ProjectNodeInteractor({
+    required ProjectNodeWorkingRepository working,
+    required ProjectNodeStorageRepository storage,
+  })  : _working = working,
+        _storage = storage;
 
-  List<ProjectNode> getNodesTrees() {
-    return _repository.getNodesTrees();
+  Future<void> init() async {
+    final nodes = await _storage.getAllNodes();
+    _working.setNodes(nodes);
   }
 
-  void updateNodeName(ProjectNode node, String name) {
-    _repository.updateNodeName(node, name);
+  ProjectNode getRootNode() {
+    final node = _working.getRootNode();
+    return node;
   }
 
-  void updateNodePosition(
-    ProjectNode node,
-    ProjectNode newParent,
-    int newOrder,
-  ) {
-    _repository.updateNodePosition(
-      node,
-      newParent,
-      newOrder,
+  ProjectNode getNode(int id) {
+    final node = _working.getNode(id);
+    return node;
+  }
+
+  List<ProjectNode> getNodeChildren(int id) {
+    final nodes = _working.getNodeChildren(id);
+    return nodes;
+  }
+
+  ProjectNode createNode(int parentNodeId) {
+    final int order = _working.getNodeChildren(parentNodeId).length;
+    return _working.createNode(
+      ProjectNodeCreateDto(
+        name: 'New Node',
+        order: order,
+        parentId: parentNodeId,
+        isOpened: true,
+      ),
     );
+  }
+
+  ProjectNode unParentNode(
+    int id,
+  ) {
+    return _working.unParentNode(id);
+  }
+
+  ProjectNode parentNode(
+    int id,
+    int parentId,
+    int order,
+  ) {
+    return _working.parentNode(id, parentId, order);
+  }
+
+  void setIsOpened(int id, bool isOpened) {
+    _working.setIsOpened(id, isOpened);
   }
 }

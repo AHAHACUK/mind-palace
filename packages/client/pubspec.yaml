@@ -1,37 +1,35 @@
-name: mind_palace_client
-description: "A notes app"
+name: client
+description: "A new Flutter project."
 publish_to: 'none'
+
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.4
+  sdk: ^3.7.2
+dependencies:
+  # Logic
+  go_router: ^15.1.2
+  flutter_bloc: ^9.1.1
+  bloc_effects: ^2.0.0
 
-dependencies: 
-  # For resizing app window
-  window_manager: ^0.4.3
-  # For storing preferences, like theme
-  shared_preferences: ^2.3.3
-  # Navigation lib
-  go_router: ^14.6.1
-  # State manager
-  flutter_bloc: ^8.1.6
+  # UI
+  fluttertoast: ^8.2.12
+  
+
+  # Utils
+  flutter_screenutil: ^5.9.3
+
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   intl: any
 
-  modified_editable_text:
-    path: ../modified_editable_text
-    
-  mind_palace_json_storage:
-    path: ../json_storage
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
-  generate: true 
+  generate: true

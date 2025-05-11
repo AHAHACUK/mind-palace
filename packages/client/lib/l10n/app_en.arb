@@ -1,9 +1,7 @@
 {
     "@@locale": "en",
-    "title": "Mind Palace",
-    "@title": {
-        "description": "App Title"
-    },
-    "defaultNodeName": "New Node",
-    "defaultProjectName": "Mind Palace"
+    "page": "Page",
+    "createPage": "Create page",
+    "errorOccurred": "Error occurred",
+    "retry": "Retry"
 }

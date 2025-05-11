@@ -1,8 +1,9 @@
+import 'package:client/dependency/default_init/dependency_init.dart';
+import 'package:client/root_page.dart';
 import 'package:flutter/material.dart';
-import 'package:mind_palace_client/app_root.dart';
-import 'package:mind_palace_client/di/dependencies.dart';
 
-void main() async {
-  await Dependencies.init();
-  runApp(const AppRoot());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  dependencyInit();
+  runApp(const RootPage());
 }

@@ -15,6 +15,16 @@ extension IterableExtension<T> on Iterable<T> {
   }
 
   List<T> separatedList(T separator) => separated(separator).toList();
+}
 
-  List<R> mapList<R>(R Function(T e) toElement) => map(toElement).toList();
+extension IterableOfIterablesExtension<T> on Iterable<Iterable<T>> {
+  Iterable<T> flatten() sync* {
+    final iterator = this.iterator;
+    while (iterator.moveNext()) {
+      final item = iterator.current;
+      for (final item in item) {
+        yield item;
+      }
+    }
+  }
 }

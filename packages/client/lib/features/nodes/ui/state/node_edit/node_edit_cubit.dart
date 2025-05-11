@@ -18,7 +18,7 @@ class NodeEditCubit extends Cubit<NodeEditState> {
     emit(NodeEditState.process(node));
   }
 
-  void finishEditingName(String name) async {
+  void finishEditing({required String name}) async {
     emit(NodeEditState.loading(node));
     final newNode = await _nodeInteractor.updateNode(node.copyWith(name: name));
     node = newNode;

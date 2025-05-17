@@ -20,6 +20,28 @@ class MemoryNodeRepository implements NodeRepository {
   }
 
   @override
+  Future<void> deleteNode(Node nodeToDelete) async {
+    final Set<int> nodesToDelete = {
+      nodeToDelete.id,
+      ..._findChildren(nodeToDelete).map((e) => e.id),
+    };
+    for (final id in nodesToDelete) {
+      _nodes.remove(id);
+    }
+  }
+
+  Set<Node> _findChildren(Node parent) {
+    final set = <Node>{};
+    for (final node in _nodes.values) {
+      if (node.parentNodeId == parent.id) {
+        set.add(node);
+        set.addAll(_findChildren(node));
+      }
+    }
+    return set;
+  }
+
+  @override
   Future<List<Node>> getAllNodes() async {
     return _nodes.values.toList();
   }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:client/dependency/dependency.dart';
 import 'package:client/features/nodes/domain/entities/node.dart';
 import 'package:client/features/nodes/ui/state/node_creator/node_creator_cubit.dart';
 import 'package:client/features/nodes/ui/state/node_edit/node_edit_cubit.dart';
@@ -29,13 +28,12 @@ class _NodeWidgetState extends State<NodeWidget> {
   @override
   void initState() {
     super.initState();
-    editCubit = Dependency.instance.blocFactory.nodeEdit(node: widget.node);
+    editCubit = BlocProvider.of<NodeEditCubit>(context);
     subs.add(editCubit.stream.listen((s) => setState(() {})));
   }
 
   @override
   void dispose() {
-    editCubit.close();
     for (var e in subs) {
       e.cancel();
     }
@@ -45,8 +43,7 @@ class _NodeWidgetState extends State<NodeWidget> {
   @override
   Widget build(BuildContext context) {
     final editState = editCubit.state;
-    final node = editState.node;
-    final isEditing = editState is ProcessNameNodeEditState;
+    final isEditing = editState is EditingNodeEditState;
     final isLoading = editState is LoadingNodeEditState;
     final canStartEdit = !isEditing && !isLoading;
     return BlocProvider.value(
@@ -54,15 +51,18 @@ class _NodeWidgetState extends State<NodeWidget> {
       child: GestureDetector(
         onLongPress: () {
           if (!canStartEdit) return;
-          editCubit.startEditing();
+          editCubit.startEditing(widget.node);
         },
         child: Row(
           children: [
             Expanded(
               child: switch (editState) {
-                ProcessNameNodeEditState _ => _NodeWidgetEdit(node: node),
-                LoadingNodeEditState _ => _NodeWidgetView(node: node),
-                IdleNodeEditState _ => _NodeWidgetView(node: node),
+                EditingNodeEditState s =>
+                  s.node.id == widget.node.id
+                      ? _NodeWidgetEdit(node: widget.node)
+                      : _NodeWidgetView(node: widget.node),
+                LoadingNodeEditState _ => _NodeWidgetView(node: widget.node),
+                IdleNodeEditState _ => _NodeWidgetView(node: widget.node),
               },
             ),
           ],

@@ -3,14 +3,15 @@ import 'dart:async';
 import 'package:client/dependency/dependency.dart';
 import 'package:client/features/nodes/ui/state/node_browser/node_browser_cubit.dart';
 import 'package:client/features/nodes/ui/state/node_creator/node_creator_cubit.dart';
+import 'package:client/features/nodes/ui/state/node_edit/node_edit_cubit.dart';
+import 'package:client/features/nodes/ui/widgets/node_page/node_browser_header.dart';
 import 'package:client/features/nodes/ui/widgets/node_page/node_browser_list.dart';
-import 'package:client/features/nodes/ui/widgets/node_page/node_widget/node_widget.dart';
-import 'package:client/toolkit/utils/adaptive_size.dart';
 import 'package:client/toolkit/utils/context_utils.dart';
 import 'package:client/toolkit/utils/toast_controller.dart';
 import 'package:client/toolkit/widgets/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class NodeBrowser extends StatefulWidget {
   const NodeBrowser({super.key});
@@ -22,6 +23,7 @@ class NodeBrowser extends StatefulWidget {
 class _NodeBrowserState extends State<NodeBrowser> with ToastMixin {
   late final NodeBrowserCubit browserCubit;
   late final NodeCreatorCubit creatorCubit;
+  late final NodeEditCubit editCubit;
 
   final Set<StreamSubscription> subs = {};
 
@@ -30,6 +32,7 @@ class _NodeBrowserState extends State<NodeBrowser> with ToastMixin {
     super.initState();
     browserCubit = Dependency.instance.blocFactory.nodeBrowser();
     creatorCubit = Dependency.instance.blocFactory.nodeCreator();
+    editCubit = Dependency.instance.blocFactory.nodeEdit();
 
     subs.add(browserCubit.stream.listen((_) => setState(() {})));
     subs.add(creatorCubit.stream.listen((_) => setState(() {})));
@@ -40,9 +43,7 @@ class _NodeBrowserState extends State<NodeBrowser> with ToastMixin {
 
   void _onCreatorEffect(NodeCreatorEffect effect) {
     final locale = context.locale;
-    if (effect is SuccessNodeCreatorState) {
-      browserCubit.fetchStructureAll();
-    } else if (effect is ErrorNodeCreatorState) {
+    if (effect is ErrorNodeCreatorState) {
       showErrorToast(message: locale.errorOccurred);
     }
   }
@@ -51,6 +52,7 @@ class _NodeBrowserState extends State<NodeBrowser> with ToastMixin {
   void dispose() {
     browserCubit.close();
     creatorCubit.close();
+    editCubit.close();
 
     for (var sub in subs) {
       sub.cancel();
@@ -60,14 +62,9 @@ class _NodeBrowserState extends State<NodeBrowser> with ToastMixin {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.locale;
-    final theme = context.theme;
-    final colors = theme.colorScheme;
-    final styles = theme.textTheme;
-
     final browserState = browserCubit.state;
 
-    if (browserState is PendingNodeBrowserState) {
+    if (browserState is LoadingNodeBrowserState) {
       return Center(child: CircularProgressIndicator());
     }
     if (browserState is ErrorNodeBrowserState) {
@@ -78,28 +75,15 @@ class _NodeBrowserState extends State<NodeBrowser> with ToastMixin {
     if (browserState is DataNodeBrowserState) {
       final nodes = browserState.rootNodes;
 
-      return BlocProvider.value(
-        value: creatorCubit,
+      return MultiProvider(
+        providers: [
+          BlocProvider.value(value: creatorCubit),
+          BlocProvider.value(value: browserCubit),
+          BlocProvider.value(value: editCubit),
+        ],
         child: Column(
           children: [
-            Row(
-              children: [
-                const SizedBox(width: 64).r,
-                Expanded(
-                  child: Text(
-                    'Project N',
-                    textAlign: TextAlign.center,
-                    style: styles.titleMedium,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    creatorCubit.createNode(name: locale.page, parentId: null);
-                  },
-                  child: Icon(Icons.add, size: 64.r, color: colors.onSurface),
-                ),
-              ],
-            ),
+            NodeBrowserHeader(),
             Expanded(child: NodeBrowserList(nodes: nodes)),
           ],
         ),

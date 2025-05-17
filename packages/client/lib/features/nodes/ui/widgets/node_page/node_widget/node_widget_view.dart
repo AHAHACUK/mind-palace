@@ -20,8 +20,8 @@ class _NodeWidgetViewState extends State<_NodeWidgetView> {
     editCubit = BlocProvider.of<NodeEditCubit>(context);
     creatorCubit = BlocProvider.of<NodeCreatorCubit>(context);
 
-    editCubit.stream.listen((_) => setState(() {}));
-    creatorCubit.stream.listen((_) => setState(() {}));
+    subs.add(editCubit.stream.listen((_) => setState(() {})));
+    subs.add(creatorCubit.stream.listen((_) => setState(() {})));
   }
 
   @override
@@ -40,12 +40,11 @@ class _NodeWidgetViewState extends State<_NodeWidgetView> {
     final styles = theme.textTheme;
     final editState = editCubit.state;
     final creatorState = creatorCubit.state;
-    final isCreatingSomething = creatorState is LoadingNodeCreatorState;
-    final color = switch (editState) {
-      ProcessNameNodeEditState _ => colors.onSurface,
-      LoadingNodeEditState _ => theme.disabledColor,
-      IdleNodeEditState _ => colors.onSurface,
-    };
+    final editingSomething = editState is EditingNodeEditState;
+    final blocked =
+        creatorState is LoadingNodeCreatorState ||
+        editState is LoadingNodeEditState;
+    final color = blocked ? theme.disabledColor : colors.onSurface;
     return Row(
       children: [
         Text(
@@ -53,16 +52,17 @@ class _NodeWidgetViewState extends State<_NodeWidgetView> {
           style: styles.bodyMedium!.copyWith(color: color),
         ),
         const Spacer(),
-        GestureDetector(
-          onTap: () {
-            if (isCreatingSomething) return;
-            creatorCubit.createNode(
-              name: locale.page,
-              parentId: widget.node.id,
-            );
-          },
-          child: Icon(Icons.add, size: 64.r, color: color),
-        ),
+        if (!editingSomething)
+          GestureDetector(
+            onTap: () {
+              if (blocked) return;
+              creatorCubit.createNode(
+                name: locale.page,
+                parentId: widget.node.id,
+              );
+            },
+            child: Icon(Icons.add, size: 64.r, color: color),
+          ),
       ],
     );
   }

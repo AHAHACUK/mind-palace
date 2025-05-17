@@ -1,23 +1,22 @@
 part of 'node_edit_cubit.dart';
 
 sealed class NodeEditState {
-  final Node node;
+  const NodeEditState._();
 
-  const NodeEditState._(this.node);
-
-  const factory NodeEditState.idle(Node node) = IdleNodeEditState._;
-  const factory NodeEditState.loading(Node node) = LoadingNodeEditState._;
-  const factory NodeEditState.process(Node node) = ProcessNameNodeEditState._;
+  const factory NodeEditState.idle() = IdleNodeEditState._;
+  const factory NodeEditState.loading() = LoadingNodeEditState._;
+  const factory NodeEditState.editing(Node node) = EditingNodeEditState._;
 }
 
 final class IdleNodeEditState extends NodeEditState {
-  const IdleNodeEditState._(super.node) : super._();
+  const IdleNodeEditState._() : super._();
 }
 
-final class ProcessNameNodeEditState extends NodeEditState {
-  const ProcessNameNodeEditState._(super.node) : super._();
+final class EditingNodeEditState extends NodeEditState {
+  final Node node;
+  const EditingNodeEditState._(this.node) : super._();
 }
 
 final class LoadingNodeEditState extends NodeEditState {
-  const LoadingNodeEditState._(super.node) : super._();
+  const LoadingNodeEditState._() : super._();
 }

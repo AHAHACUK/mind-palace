@@ -3,15 +3,15 @@ part of 'node_browser_cubit.dart';
 sealed class NodeBrowserState {
   const NodeBrowserState._();
 
-  const factory NodeBrowserState.pending() = PendingNodeBrowserState._;
+  const factory NodeBrowserState.loading() = LoadingNodeBrowserState._;
   const factory NodeBrowserState.data({
     required List<NodeTreeState> rootNodes,
   }) = DataNodeBrowserState._;
   const factory NodeBrowserState.error() = ErrorNodeBrowserState._;
 }
 
-final class PendingNodeBrowserState extends NodeBrowserState {
-  const PendingNodeBrowserState._() : super._();
+final class LoadingNodeBrowserState extends NodeBrowserState {
+  const LoadingNodeBrowserState._() : super._();
 }
 
 final class DataNodeBrowserState extends NodeBrowserState {

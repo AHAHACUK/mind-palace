@@ -36,17 +36,34 @@ class _NodeWidgetEditState extends State<_NodeWidgetEdit> {
     final theme = context.theme;
     final styles = theme.textTheme;
     final colors = theme.colorScheme;
+    final creatorCubit = BlocProvider.of<NodeCreatorCubit>(context);
+
     return TapRegion(
       onTapOutside: (_) => _finish(),
-      child: EditableText(
-        autofocus: true,
-        controller: controller,
-        focusNode: focusNode,
-        style: styles.bodyMedium!.copyWith(color: colors.onSurfaceVariant),
-        cursorColor: colors.primary,
-        selectionColor: colors.primary.withAlpha(150),
-        backgroundCursorColor: colors.primary.withAlpha(150),
-        onSubmitted: (_) => _finish(),
+      child: Row(
+        children: [
+          Expanded(
+            child: EditableText(
+              autofocus: true,
+              controller: controller,
+              focusNode: focusNode,
+              style: styles.bodyMedium!.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
+              cursorColor: colors.primary,
+              selectionColor: colors.primary.withAlpha(150),
+              backgroundCursorColor: colors.primary.withAlpha(150),
+              onSubmitted: (_) => _finish(),
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              creatorCubit.deleteNode(widget.node);
+            },
+            child: Icon(Icons.delete_outline, size: 64.r, color: colors.onSurface),
+          ),
+        ],
       ),
     );
   }

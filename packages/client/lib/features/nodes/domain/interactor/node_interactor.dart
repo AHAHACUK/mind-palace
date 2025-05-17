@@ -1,22 +1,41 @@
 import 'package:client/features/nodes/domain/entities/node.dart';
 import 'package:client/features/nodes/domain/entities/node_form.dart';
 import 'package:client/features/nodes/domain/repositories/node_repository.dart';
+import 'package:flutter/widgets.dart';
 
-class NodeInteractor {
+class NodeInteractor extends ChangeNotifier {
   final NodeRepository _repository;
 
   NodeInteractor({required NodeRepository repository})
     : _repository = repository;
 
   Future<Node> createNode(NodeForm node) {
-    return _repository.createNode(node);
+    try {
+      return _repository.createNode(node);
+    } finally {
+      notifyListeners();
+    }
   }
 
   Future<Node> updateNode(Node node) {
-    return _repository.updateNode(node);
+    try {
+      return _repository.updateNode(node);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteNode(Node node) {
+    try {
+      return _repository.deleteNode(node);
+    } finally {
+      notifyListeners();
+    }
   }
 
   Future<List<Node>> getAllNodes() {
-    return _repository.getAllNodes();
+    try {
+      return _repository.getAllNodes();
+    } finally {}
   }
 }

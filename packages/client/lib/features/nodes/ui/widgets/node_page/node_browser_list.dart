@@ -4,6 +4,7 @@ import 'package:client/toolkit/utils/adaptive_size.dart';
 import 'package:client/toolkit/utils/context_utils.dart';
 import 'package:client/toolkit/utils/list_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NodeBrowserList extends StatelessWidget {
   final List<NodeTreeState> nodes;
@@ -13,7 +14,7 @@ class NodeBrowserList extends StatelessWidget {
     final children = node.children.map((e) => _indentNode(indent + 1, e));
     return [
       _NodeTreeStateIndented(indent: indent, node: node),
-      ...children.flatten(),
+      if (node.isOpened) ...children.flatten(),
     ];
   }
 
@@ -23,34 +24,43 @@ class NodeBrowserList extends StatelessWidget {
     final colors = theme.colorScheme;
     final nodesIndented =
         nodes.map((e) => _indentNode(0, e)).flatten().toList();
+    final browserCubit = BlocProvider.of<NodeBrowserCubit>(context);
     return ListView.builder(
       itemCount: nodesIndented.length,
       itemBuilder: (_, index) {
         final indent = nodesIndented[index].indent;
         final node = nodesIndented[index].node;
         final Widget expandWidget;
+        final iconSize = 48.0;
         if (node.children.isEmpty) {
-          expandWidget = SizedBox(width: 24).r;
+          expandWidget = SizedBox(width: iconSize).r;
         } else if (node.isOpened) {
           expandWidget = Icon(
-            size: 24.r,
+            size: iconSize.r,
             Icons.expand_more,
             color: colors.onSurface,
           );
         } else {
           expandWidget = Icon(
-            size: 24.r,
+            size: iconSize.r,
             Icons.chevron_right,
             color: colors.onSurface,
           );
         }
-        return Row(
-          children: [
-            SizedBox(width: 32.0 * indent).r,
-            expandWidget,
-            const SizedBox(width: 8).r,
-            Expanded(child: NodeWidget(node: node.node)),
-          ],
+        return GestureDetector(
+          key: ValueKey(node.id),
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            browserCubit.setIsOpened(node.id, !node.isOpened);
+          },
+          child: Row(
+            children: [
+              SizedBox(width: 32.0 * indent).r,
+              expandWidget,
+              const SizedBox(width: 8).r,
+              Expanded(child: NodeWidget(node: node.node)),
+            ],
+          ),
         );
       },
     );

@@ -6,5 +6,7 @@ abstract class NodeRepository {
 
   Future<Node> updateNode(Node node);
 
+  Future<void> deleteNode(Node node);
+
   Future<List<Node>> getAllNodes();
 }

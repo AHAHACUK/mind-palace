@@ -8,20 +8,49 @@ part 'node_edit_state.dart';
 class NodeEditCubit extends Cubit<NodeEditState> {
   final NodeInteractor _nodeInteractor;
 
-  Node node;
+  Node? editingNode;
 
-  NodeEditCubit({required NodeInteractor nodeInteractor, required this.node})
+  NodeEditCubit({required NodeInteractor nodeInteractor})
     : _nodeInteractor = nodeInteractor,
-      super(NodeEditState.idle(node));
+      super(NodeEditState.idle()) {
+    init();
+  }
 
-  void startEditing() async {
-    emit(NodeEditState.process(node));
+  void init() {
+    _nodeInteractor.addListener(_onNodeChange);
+  }
+
+  @override
+  Future<void> close() {
+    _nodeInteractor.removeListener(_onNodeChange);
+
+    return super.close();
+  }
+
+  void _onNodeChange() async {
+    if (editingNode == null) return;
+    final nodes = await _nodeInteractor.getAllNodes();
+    final nodeIds = nodes.map((e) => e.id).toSet();
+    if (!nodeIds.contains(editingNode!.id)) {
+      cancelEditing();
+    }
+  }
+
+  void startEditing(Node node) async {
+    editingNode = node;
+    emit(NodeEditState.editing(node));
   }
 
   void finishEditing({required String name}) async {
-    emit(NodeEditState.loading(node));
-    final newNode = await _nodeInteractor.updateNode(node.copyWith(name: name));
-    node = newNode;
-    emit(NodeEditState.idle(newNode));
+    emit(NodeEditState.loading());
+    await _nodeInteractor.updateNode(editingNode!.copyWith(name: name));
+    editingNode = null;
+    emit(NodeEditState.idle());
+  }
+
+  /// Finish editing without applying changes
+  void cancelEditing() async {
+    editingNode = null;
+    emit(NodeEditState.idle());
   }
 }

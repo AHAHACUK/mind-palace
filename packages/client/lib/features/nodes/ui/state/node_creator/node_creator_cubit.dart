@@ -19,9 +19,23 @@ class NodeCreatorCubit
     try {
       final form = NodeForm(name: name, parentNodeId: parentId);
       final node = await _nodeInteractor.createNode(form);
-      emitEffect(NodeCreatorEffect.success(node));
+      emitEffect(NodeCreatorEffect.successCreate(node));
     } catch (_) {
       emitEffect(const NodeCreatorEffect.error());
+      rethrow;
+    } finally {
+      emit(const NodeCreatorState.idle());
+    }
+  }
+
+  void deleteNode(Node node) async {
+    emit(NodeCreatorState.loading(parentId: node.parentNodeId));
+    try {
+      await _nodeInteractor.deleteNode(node);
+      emitEffect(NodeCreatorEffect.successCreate(node));
+    } catch (_) {
+      emitEffect(const NodeCreatorEffect.error());
+      rethrow;
     } finally {
       emit(const NodeCreatorState.idle());
     }

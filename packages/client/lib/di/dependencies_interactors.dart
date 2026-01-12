@@ -1,7 +1,7 @@
-import 'package:mind_palace/features/navigator/domain/interactors/app_router_config_interactor.dart';
+import 'package:mind_palace/features/explorer/domain/interactors/explorer_interactor.dart';
 
 class DependenciesInteractors {
-  final AppRouterConfigInteractor appRouter;
+  final ExplorerInteractor explorer;
 
-  DependenciesInteractors({required this.appRouter});
+  DependenciesInteractors({required this.explorer});
 }

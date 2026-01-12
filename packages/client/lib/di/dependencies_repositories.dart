@@ -1,7 +1,7 @@
-import 'package:mind_palace/features/navigator/domain/repositories/app_router_config_repository.dart';
+import 'package:mind_palace/features/explorer/domain/repositories/explorer_repository.dart';
 
 class DependenciesRepositories {
-  final AppRouterConfigRepository appRouter;
+  final ExplorerRepository explorer;
 
-  DependenciesRepositories({required this.appRouter});
+  DependenciesRepositories({required this.explorer});
 }

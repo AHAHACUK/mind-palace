@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mind_palace/di/dependencies.dart';
 import 'package:mind_palace/di/dependencies_provider.dart';
 import 'package:mind_palace/di/init/dependencies_initializer.dart';
-import 'package:mind_palace/features/navigator/ui/mind_palace_router.dart';
+import 'package:mind_palace/router/mind_palace_router.dart';
 
 void main() async {
   final depsInit = DependenciesInitializer();
@@ -10,18 +10,23 @@ void main() async {
   runApp(_App(deps: deps));
 }
 
-class _App extends StatelessWidget {
+class _App extends StatefulWidget {
   final Dependencies deps;
   const _App({required this.deps});
 
   @override
+  State<_App> createState() => _AppState();
+}
+
+class _AppState extends State<_App> {
+  final router = buildRouter();
+
+  @override
   Widget build(BuildContext context) {
     return DependenciesProvider(
-      deps: deps,
+      deps: widget.deps,
       child: MaterialApp.router(
-        routerConfig: deps.interactors.appRouter.fromAppConfig(
-          mindPalaceRouter,
-        ),
+        routerConfig: router,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),

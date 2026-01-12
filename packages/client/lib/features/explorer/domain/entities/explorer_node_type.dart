@@ -1,0 +1,1 @@
+enum ExplorerNodeType { folder, text }

@@ -30,6 +30,7 @@ environment:
 dependencies:
   uri: ^1.0.0
   go_router: ^17.0.1
+  flutter_bloc: ^9.1.1
   flutter:
     sdk: flutter
   
